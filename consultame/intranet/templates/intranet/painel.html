@@ -1,0 +1,48 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}Consulta.me — Painel{% endblock %}
+
+{% block content %}
+<main class="container">
+  <h1 class="pagina-titulo">Painel da clínica</h1>
+  <p class="muted">Bem-vindo(a), {{ request.user.get_full_name|default:request.user.username }}. Hoje é {% now "d/m/Y" %}.</p>
+
+  <!-- Indicadores rápidos: os números vêm do dicionário "contexto" da view painel -->
+  <div class="indicadores">
+    <a class="indicador" href="{% url 'intranet:medico-list' %}"><strong>{{ total_medicos }}</strong><span>médicos ativos</span></a>
+    <a class="indicador" href="{% url 'intranet:paciente-list' %}"><strong>{{ total_pacientes }}</strong><span>pacientes</span></a>
+    <a class="indicador" href="{% url 'intranet:consulta-list' %}"><strong>{{ consultas_hoje }}</strong><span>consultas hoje</span></a>
+    <a class="indicador" href="{% url 'intranet:receita-list' %}"><strong>{{ total_receitas }}</strong><span>receitas emitidas</span></a>
+  </div>
+
+  <section class="card">
+    <h2 class="title">Próximas consultas</h2>
+    <table class="tabela">
+      <thead><tr><th>Data e hora</th><th>Paciente</th><th>Médico</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for consulta in proximas %}
+        <tr>
+          <td>{{ consulta.horario|date:"d/m/Y H:i" }}</td>
+          <td>{{ consulta.paciente_id }}</td>
+          <td>{{ consulta.medico_id }}</td>
+          <td><span class="status status-{{ consulta.status }}">{{ consulta.get_status_display }}</span></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">Nenhuma consulta agendada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2 class="title">Atalhos</h2>
+    <div class="atalhos">
+      <a class="btn btn-primary" href="{% url 'intranet:consulta-create' %}">＋ Agendar consulta</a>
+      <a class="btn btn-tertiary" href="{% url 'intranet:paciente-create' %}">＋ Novo paciente</a>
+      <a class="btn btn-tertiary" href="{% url 'intranet:receita-create' %}">＋ Nova receita</a>
+      <a class="btn btn-tertiary" href="{% url 'intranet:exames' %}">⬆ Enviar exame</a>
+      <a class="btn btn-secondary" href="{% url 'intranet:relatorio-pacientes' %}">⬇ Exportar pacientes (CSV)</a>
+    </div>
+  </section>
+</main>
+{% endblock %}

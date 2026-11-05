@@ -1,0 +1,35 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}Listagem de Pacientes{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h2 class="title">Listagem de pacientes</h2>
+
+    <div class="table-controls">
+      <a href="{% url 'intranet:paciente-create' %}" class="btn btn-tertiary">＋ Novo paciente</a>
+    </div>
+
+    <table class="tabela">
+      <thead><tr><th>Nome</th><th>E-mail</th><th>Telefone</th><th>CPF</th><th>Ações</th></tr></thead>
+      <tbody>
+        {% for paciente in pacientes %}
+        <tr>
+          <td>{{ paciente.nome }} {{ paciente.sobrenome }}</td>
+          <td>{{ paciente.email }}</td>
+          <td>{{ paciente.telefone }}</td>
+          <td>{{ paciente.cpf }}</td>
+          <td class="acoes">
+            <a href="{% url 'intranet:paciente-update' paciente.pk %}">editar</a>
+            <a class="perigo" href="{% url 'intranet:paciente-delete' paciente.pk %}">excluir</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="5">Nenhum paciente cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

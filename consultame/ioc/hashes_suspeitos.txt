@@ -1,0 +1,13 @@
+# Indicadores de comprometimento (IoC) — SHA-256 de arquivos maliciosos conhecidos
+# LISTA FICTÍCIA para as aulas: os hashes abaixo foram inventados (exceto o 1º).
+# O 1º é o SHA-256 de ioc/teste_suspeito.txt (inofensivo), para vocês testarem a detecção.
+# Formato: <sha256>;<família>;<observação>
+2e023139bc3d79810c3154be1e71088a7dda752ebe57be8e3773a72f18b18794;TESTE;arquivo de teste do Consulta.me
+587e31a6420429d8b10f99492fe0b2765c8bdd2a3449107ffd6a4d0fd05ada15;Trojan.Agendador;anexo "resultado de exame" em e-mail falso
+a04ed89993fd7c796aef696db6d3b15c8f70a82dc3b87d0bf8fef22b7bf2783d;Ransom.ClinicLock;ransomware que mira consultórios
+37ff837e8de40c112262dcb4454030be8dcdf66c7f1b3d3d347e738b4e854fa6;Spyware.PrintScan;captura de tela disfarçada de driver de impressora
+e602103b82cc848f31131bf77a2b8cbc39f0a1eced07efaec847ee26668d3e9f;Worm.PenDrive;se espalha por pendrives da recepção
+bcccefc5fcd82fa81e7d49d1e54613ad2e78ce4aba1c1d62fc65a241ec1fa217;Downloader.NotaFiscal;macro em planilha "nota fiscal"
+56595a0195e2fe0f372b738006ad961b7b51bb3a3cfb0d5c46395d58b494bd39;Keylogger.Recepcao;registra o que é digitado no teclado
+5afbd62858e346c1ca16eb3681de944c94cac4045dc7fb98da7a9a62dd9d3dab;Backdoor.AcessoRemoto;abre acesso remoto escondido
+b41fa3be5f3ea19d4a82b5434ad216e36e41d599dfc56d76d1a4cc267dd5a65c;Ransom.ClinicLock;variante de 2026

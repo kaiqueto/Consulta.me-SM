@@ -1,0 +1,89 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card form-card">
+    <h2 class="title">{{ titulo }}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- 1. Especialidade: não é salva, só filtra os médicos via JavaScript -->
+      <div class="form-group">
+        <label for="id_especialidade">Especialidade:</label>
+        {{ form.especialidade }}
+      </div>
+
+      <!-- 2. Médico: o JavaScript preenche conforme a especialidade -->
+      <div class="form-group">
+        <label for="id_medico_id">Médico:</label>
+        {{ form.medico_id }}
+        {% if form.medico_id.errors %}<p class="erro">{{ form.medico_id.errors|join:" " }}</p>{% endif %}
+      </div>
+
+      <!-- 3. CPF: o servidor usa este valor para buscar o Paciente -->
+      <div class="form-group">
+        <label for="id_cpf_paciente">CPF do paciente:</label>
+        {{ form.cpf_paciente }}
+        {% if form.cpf_paciente.errors %}<p class="erro">{{ form.cpf_paciente.errors|join:" " }}</p>{% endif %}
+      </div>
+
+      <!-- 4. Data e hora -->
+      <div class="form-group">
+        <label for="id_horario">Data e hora:</label>
+        {{ form.horario }}
+        {% if form.horario.errors %}<p class="erro">{{ form.horario.errors|join:" " }}</p>{% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="id_status">Status:</label>
+        {{ form.status }}
+      </div>
+
+      <div class="form-group">
+        <label for="id_observacao">Observações do atendimento:</label>
+        {{ form.observacao }}
+      </div>
+
+      <div class="buttons">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'intranet:consulta-list' %}" class="btn btn-secondary">Voltar</a>
+      </div>
+    </form>
+  </section>
+</main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // medicos_json: variável Python injetada no template pela view
+  // |escapejs: escapa aspas e caracteres especiais para uso seguro dentro de uma string JS
+  const todosOsMedicos = JSON.parse('{{ medicos_json|escapejs }}');
+
+  function filtrarMedicos() {
+    const especialidade = document.getElementById('id_especialidade').value;
+    const selectMedico = document.getElementById('id_medico_id');
+    const valorAtual = selectMedico.value;   // guarda o médico já escolhido (edição)
+
+    selectMedico.innerHTML = '<option value="">Selecione um médico</option>';
+
+    // Com especialidade escolhida, mostra só os médicos dela
+    const lista = especialidade
+      ? todosOsMedicos.filter(m => m.especialidade === especialidade)
+      : todosOsMedicos;
+
+    lista.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.id;
+      opt.textContent = m.nome + ' ' + m.sobrenome;
+      if (String(m.id) === String(valorAtual)) opt.selected = true;
+      selectMedico.appendChild(opt);
+    });
+  }
+
+  document.getElementById('id_especialidade').addEventListener('change', filtrarMedicos);
+  window.addEventListener('DOMContentLoaded', filtrarMedicos);
+</script>
+{% endblock %}

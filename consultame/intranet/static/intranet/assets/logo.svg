@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="40" viewBox="0 0 190 40" role="img" aria-label="Consulta.me">
+  <rect x="2" y="4" width="32" height="32" rx="9" fill="#ffffff"/>
+  <path d="M18 11v18M9 20h18" stroke="#1f7ae0" stroke-width="5" stroke-linecap="round"/>
+  <text x="44" y="27" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="21" font-weight="700" fill="#ffffff">Consulta<tspan fill="#bfe0ff">.me</tspan></text>
+</svg>

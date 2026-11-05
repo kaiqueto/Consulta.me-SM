@@ -1,0 +1,22 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}{{ titulo }}{% endblock %}
+{# {{ titulo }} vem da View (TituloMixin): "Cadastro de ..." ou "Editar ..." #}
+
+{% block content %}
+<main class="container">
+  <section class="card form-card">
+    <h2 class="title">{{ titulo }}</h2>
+
+    <form method="post">
+      {% csrf_token %}
+      {% include 'intranet/_campos.html' %}  <!-- include: insere outro template aqui dentro -->
+
+      <div class="buttons">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a href="{% url 'intranet:medico-list' %}" class="btn btn-secondary">Voltar</a>
+      </div>
+    </form>
+  </section>
+</main>
+{% endblock %}

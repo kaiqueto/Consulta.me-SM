@@ -1,0 +1,41 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}Exames{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card form-card">
+    <h2 class="title">Enviar exame</h2>
+
+    <!-- enctype="multipart/form-data" é OBRIGATÓRIO para enviar arquivos -->
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% include 'intranet/_campos.html' %}
+      <div class="buttons">
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2 class="title">Exames recebidos</h2>
+    <table class="tabela">
+      <thead><tr><th>Enviado em</th><th>Paciente</th><th>Exame</th><th>Arquivo</th><th>Enviado por</th></tr></thead>
+      <tbody>
+        {% for exame in exames %}
+        <tr>
+          <td>{{ exame.enviado_em|date:"d/m/Y H:i" }}</td>
+          <td>{{ exame.paciente }}</td>
+          <td>{{ exame.descricao }}</td>
+          <!-- exame.arquivo.url: endereço público do arquivo em /media/... -->
+          <td><a href="{{ exame.arquivo.url }}" target="_blank">{{ exame.arquivo.name|cut:"exames/" }}</a></td>
+          <td>{{ exame.enviado_por.username|default:"—" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nenhum exame enviado ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

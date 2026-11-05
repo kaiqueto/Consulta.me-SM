@@ -1,0 +1,42 @@
+{% extends 'intranet/base_logado.html' %}
+
+{% block title %}Listagem de Consultas{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h2 class="title">Listagem de consultas</h2>
+
+    <div class="table-controls">
+      <a href="{% url 'intranet:consulta-create' %}" class="btn btn-tertiary">＋ Agendar consulta</a>
+    </div>
+
+    <table class="tabela">
+      <thead><tr><th>Paciente</th><th>Médico</th><th>Data e hora</th><th>Status</th><th>Ações</th></tr></thead>
+      <tbody>
+        {% for consulta in consultas %}
+        <tr>
+          <!-- consulta.paciente_id é o OBJETO Paciente (ForeignKey), não o ID -->
+          <td>{{ consulta.paciente_id.nome }} {{ consulta.paciente_id.sobrenome }}</td>
+          <td>{{ consulta.medico_id.nome }} {{ consulta.medico_id.sobrenome }}</td>
+
+          <!-- |date: filtro Django que formata datetime (ex: 20/05/2026 14:30) -->
+          <td>{{ consulta.horario|date:"d/m/Y H:i" }}</td>
+
+          <!-- get_status_display(): retorna "Agendada" em vez de "A" -->
+          <td><span class="status status-{{ consulta.status }}">{{ consulta.get_status_display }}</span></td>
+
+          <td class="acoes">
+            <a href="{% url 'intranet:consulta-update' consulta.pk %}">editar</a>
+            <a href="{% url 'intranet:receita-create' %}?consulta={{ consulta.pk }}">receita</a>
+            <a class="perigo" href="{% url 'intranet:consulta-delete' consulta.pk %}">excluir</a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Nenhuma consulta cadastrada.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

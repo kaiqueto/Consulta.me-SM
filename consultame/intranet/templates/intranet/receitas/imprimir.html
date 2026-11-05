@@ -1,0 +1,48 @@
+{% extends 'intranet/base_logado.html' %}
+{% load static %}
+
+{% block title %}Receita #{{ receita.pk }}{% endblock %}
+
+{% block content %}
+<main class="container">
+  <div class="table-controls nao-imprimir">
+    <a href="{% url 'intranet:receita-list' %}" class="btn btn-secondary">← Receitas</a>
+    <!-- window.print(): abre a janela de impressão do navegador -->
+    <button class="btn btn-primary" onclick="window.print()">🖨 Imprimir</button>
+  </div>
+
+  <article class="card receita">
+    <header class="receita-topo">
+      <img src="{% static 'intranet/assets/logo.svg' %}" alt="Consulta.me">
+      <div>
+        <strong>Clínica Consulta.me</strong><br>
+        <span class="muted">Rua Fictícia, 100 · Rio de Janeiro/RJ</span>
+      </div>
+    </header>
+
+    <h2 class="title">Receituário</h2>
+
+    {% with consulta=receita.consulta %}
+    <p><strong>Paciente:</strong> {{ consulta.paciente_id }}</p>
+    <p><strong>Médico(a):</strong> {{ consulta.medico_id }} · CRM {{ consulta.medico_id.crm }} · {{ consulta.medico_id.especialidade }}</p>
+    {% endwith %}
+
+    <div class="receita-corpo">
+      <p class="receita-medicamento">{{ receita.medicamento }}</p>
+      <p>{{ receita.posologia }}</p>
+      {% if receita.observacoes %}<p class="muted">{{ receita.observacoes|linebreaksbr }}</p>{% endif %}
+    </div>
+
+    <footer class="receita-rodape">
+      <p>Rio de Janeiro, {{ receita.emitida_em|date:"d \d\e F \d\e Y" }}</p>
+      <div class="assinatura-linha">
+        {{ receita.consulta.medico_id }}<br>
+        <span class="muted">CRM {{ receita.consulta.medico_id.crm }}</span>
+      </div>
+      {% if receita.assinatura %}
+      <p class="assinatura-digital">Assinatura digital: <code>{{ receita.assinatura|truncatechars:48 }}</code></p>
+      {% endif %}
+    </footer>
+  </article>
+</main>
+{% endblock %}

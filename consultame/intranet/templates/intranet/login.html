@@ -1,0 +1,40 @@
+{% extends 'intranet/base.html' %}  <!-- herda o layout base sem menu de logado -->
+{% load static %}
+
+{% block title %}Consulta.me — Login{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card form-card">
+    <h2 class="title">Login</h2>
+    <p class="muted">Intranet da Clínica Consulta.me — acesso da equipe.</p>
+
+    <!-- method="post": dados enviados no corpo da requisição (não na URL) -->
+    <form method="post">
+      {% csrf_token %}  <!-- obrigatório em todo formulário POST no Django -->
+
+      <!-- form.errors: dicionário com erros de validação do formulário Django -->
+      {% if form.errors %}
+      <p class="erro">Usuário ou senha incorretos. Tente novamente.</p>
+      {% endif %}
+
+      <div class="form-group">
+        <label for="id_username">Usuário:</label>
+        <!-- Django espera os campos "username" e "password" na LoginView -->
+        <input id="id_username" name="username" type="text" required autofocus>
+      </div>
+
+      <div class="form-group">
+        <label for="id_password">Senha:</label>
+        <input id="id_password" name="password" type="password" required>
+      </div>
+
+      <!-- "next": URL para onde redirecionar após login -->
+      <!-- ex: se tentou acessar /medicos/ sem login, next=/medicos/ e vai direto para lá -->
+      <input type="hidden" name="next" value="{{ next }}">
+
+      <button class="btn btn-primary" type="submit">Entrar</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

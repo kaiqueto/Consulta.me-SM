@@ -1,0 +1,50 @@
+{% load static %}
+{# {% load static %}: carrega a tag {% static %} que resolve caminhos de arquivos estáticos #}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {# {% block title %}: bloco que templates filhos podem sobrescrever #}
+  <title>{% block title %}Consulta.me{% endblock %}</title>
+
+  {# {% static '...' %}: resolve o caminho do arquivo estático para /static/intranet/... #}
+  <link rel="stylesheet" href="{% static 'intranet/style.css' %}">
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  {% block header %}
+  <!-- Este bloco é substituído pelo base_logado.html quando o usuário está logado -->
+  <header class="header">
+    <div class="container header-container">
+      <a class="logo" href="{% url 'login' %}">
+        <img src="{% static 'intranet/assets/logo.svg' %}" alt="Consulta.me">
+      </a>
+    </div>
+  </header>
+  {% endblock %}
+
+  <!-- Sistema de mensagens flash (ex: "Salvo com sucesso!") -->
+  {% if messages %}
+  <div class="container mensagens">
+    {% for message in messages %}  <!-- itera sobre as mensagens pendentes -->
+    <div class="mensagem {{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+  <!-- bloco principal: cada template filho preenche aqui com seu conteúdo -->
+
+  <footer class="footer">
+    <div class="container">Consulta.me · Clínica (fictícia) · ambiente de desenvolvimento das aulas</div>
+  </footer>
+
+  {% block extra_scripts %}{% endblock %}
+  <!-- scripts extras: o formulário de consulta insere o JavaScript de filtro aqui -->
+
+</body>
+</html>

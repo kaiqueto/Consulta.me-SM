@@ -1,0 +1,43 @@
+{% extends 'intranet/base_logado.html' %}  <!-- herda o layout com menu de logado -->
+{% load static %}
+
+{% block title %}Listagem de Médicos{% endblock %}
+
+{% block content %}
+<main class="container">
+  <section class="card">
+    <h2 class="title">Listagem de médicos</h2>
+
+    <div class="table-controls">
+      {# {% url 'intranet:medico-create' %} → /medicos/novo/ #}
+      <a href="{% url 'intranet:medico-create' %}" class="btn btn-tertiary">＋ Novo médico</a>
+    </div>
+
+    <table class="tabela">
+      <thead><tr><th>Nome</th><th>E-mail</th><th>CRM</th><th>Especialidade</th><th>Ações</th></tr></thead>
+      <tbody>
+
+        {# {% for medico in medicos %}: itera sobre a lista "medicos" enviada pela View #}
+        {% for medico in medicos %}
+        <tr>
+          <td>{{ medico.nome }} {{ medico.sobrenome }}</td>
+          <td>{{ medico.email }}</td>
+          <td>{{ medico.crm }}</td>
+          <td>{{ medico.especialidade }}</td>
+          <td class="acoes">
+            <!-- medico.pk = primary key (ID) do médico — usado na URL dinâmica -->
+            <a href="{% url 'intranet:medico-update' medico.pk %}">editar</a>
+            <a class="perigo" href="{% url 'intranet:medico-delete' medico.pk %}">excluir</a>
+          </td>
+        </tr>
+
+        {% empty %}
+        {# {% empty %}: exibido quando a lista está vazia #}
+        <tr><td colspan="5">Nenhum médico cadastrado.</td></tr>
+
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</main>
+{% endblock %}

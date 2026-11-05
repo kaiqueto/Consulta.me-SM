@@ -1,0 +1,54 @@
+{% extends 'intranet/base.html' %}
+<!-- extends: declara que este template herda de base.html -->
+{# Tudo que não está em um {% block %} é ignorado — só blocos são usados #}
+
+{% load static %}
+
+{% block header %}
+<!-- Sobrescreve o bloco header do pai — este é o cabeçalho para usuários logados -->
+<header class="header">
+  <div class="container header-container">
+    <a class="logo" href="{% url 'intranet:painel' %}">
+      <img src="{% static 'intranet/assets/logo.svg' %}" alt="Consulta.me">
+    </a>
+
+    <nav class="main-nav">
+      <ul class="nav-left">
+        <li><a href="{% url 'intranet:painel' %}">PAINEL</a></li>
+
+        <!-- Dropdown CADASTROS -->
+        <li class="dropdown">  <!-- :hover mostra .dropdown-menu via CSS -->
+          <a href="#">CADASTROS <i class="arrow-down"></i></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'intranet:medico-list' %}">Médicos</a></li>
+            <li><a href="{% url 'intranet:paciente-list' %}">Pacientes</a></li>
+            <li><a href="{% url 'intranet:consulta-list' %}">Consultas</a></li>
+          </ul>
+        </li>
+        <li><a href="{% url 'intranet:receita-list' %}">RECEITAS</a></li>
+        <li><a href="{% url 'intranet:exames' %}">EXAMES</a></li>
+      </ul>
+
+      <!-- Dropdown do usuário logado -->
+      <ul class="nav-right">
+        <li class="dropdown">
+          <a href="#">
+            <!-- get_full_name: "Nome Sobrenome"; se vazio, usa o username (|default) -->
+            Olá, <span>{{ request.user.get_full_name|default:request.user.username }}</span> <i class="arrow-down"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-direita">
+            {% if request.user.is_staff %}<li><a href="{% url 'admin:index' %}">Painel admin</a></li>{% endif %}
+            <li>
+              <!-- Logout deve ser POST (proteção CSRF) — não pode ser link GET -->
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}  <!-- token de segurança contra Cross-Site Request Forgery -->
+                <button type="submit">Sair</button>
+              </form>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+{% endblock %}

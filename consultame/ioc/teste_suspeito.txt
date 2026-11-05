@@ -1,0 +1,2 @@
+Arquivo de TESTE do Consulta.me (inofensivo).
+O SHA-256 deste arquivo está na lista ioc/hashes_suspeitos.txt para vocês testarem a detecção da Sprint 6.

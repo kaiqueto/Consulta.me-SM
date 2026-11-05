@@ -1,0 +1,8 @@
+<!-- Renderiza todos os campos do form, um por um, com o rótulo e os erros de cada campo -->
+{% for campo in form %}
+<div class="form-group">
+  {{ campo.label_tag }}
+  {{ campo }}
+  {% if campo.errors %}<p class="erro">{{ campo.errors|join:" " }}</p>{% endif %}
+</div>
+{% endfor %}
