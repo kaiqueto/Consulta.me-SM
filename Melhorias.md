@@ -6,7 +6,7 @@ Equipe:
 - Documentador: Yasmin
 
 
-# ista de Erros
+# Lista de Erros
 
 ## Admin:
 
